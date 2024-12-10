@@ -1,0 +1,34 @@
+{
+    "name": "aangaraa/pay",
+    "description": "A Laravel package for integrating MTN and Orange Money payments in Cameroon",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aangaraa Pay",
+            "email": "contact@aangaraa.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.4|^8.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/support": "^8.0|^9.0|^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aangaraa\\Pay\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aangaraa\\Pay\\AangaraaPayServiceProvider"
+            ],
+            "aliases": {
+                "AangaraaPay": "Aangaraa\\Pay\\Facades\\AangaraaPay"
+            }
+        }
+    }
+}
