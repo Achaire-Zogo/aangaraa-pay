@@ -1,5 +1,5 @@
 {
-    "name": "aangaraa/pay",
+    "name": "zaz-aangaraa/pay",
     "description": "A Laravel package for integrating MTN and Orange Money payments in Cameroon",
     "type": "library",
     "license": "MIT",
