@@ -3,10 +3,11 @@
     "description": "A Laravel package for integrating MTN and Orange Money payments in Cameroon",
     "type": "library",
     "license": "MIT",
+    "version": "1.0.0", 
     "authors": [
         {
             "name": "Aangaraa Pay",
-            "email": "contact@aangaraa.com"
+            "email": "contact@pialoa-tech.com"
         }
     ],
     "minimum-stability": "dev",
