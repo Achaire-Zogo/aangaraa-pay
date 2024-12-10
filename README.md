@@ -27,8 +27,7 @@ php artisan migrate
 ```env
 # Aangaraa Pay Configuration
 AANGARAA_PAY_API_URL=https://votre-api-url.com/api
-MTN_APP_KEY=votre_app_key_mtn
-ORANGE_APP_KEY=votre_app_key_orange
+AANGARAA_PAY_APP_KEY=votre_app_key
 MTN_CALLBACK_URL=https://votre-site.com/callback/mtn
 MTN_NOTIFY_URL=https://votre-site.com/notify/mtn
 ORANGE_CALLBACK_URL=https://votre-site.com/callback/orange

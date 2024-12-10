@@ -24,7 +24,7 @@ class AangaraaPayService
                 'amount' => $data['amount'],
                 'phone_number' => $data['phone_number'],
                 'description' => $data['description'],
-                'app_key' => $data['app_key'],
+                'app_key' => env('AANGARAA_PAY_APP_KEY'), // Utilisation de la variable d'environnement
                 'transaction_id' => $data['transaction_id'],
                 'operator' => $data['operator'],
                 'status' => 'PENDING',
@@ -40,24 +40,22 @@ class AangaraaPayService
 
     protected function processPayment($transaction, $data)
     {
-        $appKey = $data['app_key'];
+        $appKey = env('AANGARAA_PAY_APP_KEY'); // Utilisation de la variable d'environnement
         $payload = [
+            'phone_number' => $data['phone_number'],
             'amount' => $data['amount'],
-            'currency' => $data['currency'] ?? 'XAF',
-            'externalId' => $transaction->transaction_id,
-            'payerMessage' => $data['description'],
-            'payeeNote' => $data['description'],
-            'payer' => [
-                'partyIdType' => 'MSISDN',
-                'partyId' => $data['phone_number']
-            ],
-            'operator' => $data['operator']
+            'description' => $data['description'],
+            'app_key' => $appKey,
+            'transaction_id' => $transaction->transaction_id,
+            'return_url' => $data['return_url'],
+            'notify_url' => $data['notify_url'],
+            'operator' => $data['operator'],
         ];
 
         // Appel à votre API pour initier le paiement
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $appKey
-        ])->post($this->getAangaraaPayApiUrl() . '/initiate-payment', $payload);
+            'Content-Type' => 'application/json',
+        ])->post($this->getAangaraaPayApiUrl() . '/direct_payment', $payload);
 
         if ($response->successful()) {
             $transaction->update([
@@ -76,9 +74,34 @@ class AangaraaPayService
         throw new \Exception('Payment initialization failed: ' . $response->body());
     }
 
+    public function checkTransactionStatus($payToken)
+    {
+        try {
+            $appKey = env('AANGARAA_PAY_APP_KEY'); // Utilisation de la variable d'environnement
+            $payload = [
+                'payToken' => $payToken,
+                'app_key' => $appKey,
+            ];
+
+            // Appel à votre API pour vérifier le statut de la transaction
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($this->getAangaraaPayApiUrl() . '/aangaraa_check_status', $payload);
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            throw new \Exception('Failed to retrieve transaction status: ' . $response->body());
+        } catch (\Exception $e) {
+            Log::error('AangaraaPay Check Status Error: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
     protected function validatePaymentData($data)
     {
-        $required = ['phone_number', 'amount', 'description', 'app_key', 'transaction_id', 'operator'];
+        $required = ['phone_number', 'amount', 'description', 'transaction_id', 'operator'];
         
         foreach ($required as $field) {
             if (!isset($data[$field])) {
@@ -97,6 +120,6 @@ class AangaraaPayService
 
     protected function getAangaraaPayApiUrl()
     {
-        return env('AANGARAA_PAY_API_URL', 'https://your-api-url.com/api');
+        return env('AANGARAA_PAY_API_URL', 'https://your-api-url.com/api'); // Utilisation de la variable d'environnement
     }
 }
