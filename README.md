@@ -5,7 +5,7 @@ Un package Laravel pour intégrer facilement les paiements MTN Mobile Money et O
 ## Installation
 
 ```bash
-composer require aangaraa/pay
+composer require zaz-aangaraa/pay
 ```
 
 ## Configuration
