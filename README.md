@@ -38,6 +38,7 @@ ORANGE_NOTIFY_URL=https://votre-site.com/notify/orange
 ## Utilisation
 
 ### Initialiser un paiement
+
 ```php
 use Aangaraa\Pay\Facades\AangaraaPay;
 
@@ -54,11 +55,13 @@ $payment = AangaraaPay::initializePayment([
 ```
 
 ### Vérifier le statut d'un paiement
+
 ```php
 $status = AangaraaPay::checkPaymentStatus('unique_transaction_id');
 ```
 
 ### Retirer de l'argent
+
 ```php
 $response = AangaraaPay::withdrawMoney([
     'phone_number' => '237XXXXXXXXX',
